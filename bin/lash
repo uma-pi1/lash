@@ -1,0 +1,42 @@
+#!/bin/bash
+# LASH command script
+
+if [ "$JAVA_HOME" = "" ]; then
+  echo "Error: JAVA_HOME is not set."
+  exit 1
+fi
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+execMode="s"
+lashJar="$DIR/../target/LASH-0.0.1-SNAPSHOT-jar-with-dependencies.jar"
+lashArgs=$*
+
+while [[ $# > 1 ]]
+do
+key="$1"
+shift
+
+case $key in
+    -m|--mode)
+    execMode="$1"
+    shift
+    ;;
+    *)
+    # unknown option
+    ;;
+esac
+done
+
+if [ $execMode == "s" ] ; then
+	echo "Executing LASH in sequential mode"
+	java -jar $lashJar $lashArgs
+else
+	#Check HADOOP_HOME
+	if [ "$HADOOP_HOME" = "" ]; then
+		  echo "Error: HADOOP_HOME is not set."
+		  exit 1
+	fi
+	echo "Executing LASH in distributed mode"
+	$HADOOP_HOME/bin/hadoop jar $lashJar $lashArgs
+fi
+
