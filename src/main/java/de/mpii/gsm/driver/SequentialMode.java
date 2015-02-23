@@ -60,8 +60,16 @@ public class SequentialMode {
 
 				if (!fs.exists(new Path(inputFile)))
 					fs.create(new Path(inputFile));
+				else {
+					fs.delete(new Path(inputFile), true);
+					fs.create(new Path(inputFile));
+				}
 				if (!fs.exists(new Path(dictionaryFile)))
 					fs.create(new Path(dictionaryFile));
+				else{
+					fs.delete(new Path(dictionaryFile),true);
+					fs.create(new Path(dictionaryFile));
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -98,9 +106,9 @@ public class SequentialMode {
 		String line;
 
 		while ((line = br.readLine()) != null) {
-			String[] splits = line.split("\t");
+			String[] splits = line.split(config.getItemSeparator());
 			if (splits.length == 2)
-				parents.put(splits[0], splits[1]); // TODO: check for DAGs
+				parents.put(splits[0].trim(), splits[1].trim()); // TODO: check for DAGs
 		}
 		br.close();
 	}
@@ -142,11 +150,11 @@ public class SequentialMode {
 		while ((line = br.readLine()) != null) {
 			OpenObjectIntHashMap<String> wordCounts = new OpenObjectIntHashMap<String>();
 
-			String[] items = line.split("\\s+");
+			String[] items = line.split(config.getItemSeparator());
 
 			// seqId item_1 item_2 ... item_n
 			for (int i = 1; i < items.length; ++i) {
-				String item = items[i];
+				String item = items[i].trim();
 
 				wordCounts.adjustOrPutValue(item, +1, +1);
 
@@ -253,13 +261,13 @@ public class SequentialMode {
 		String line;
 
 		while ((line = br.readLine()) != null) {
-			String[] items = line.split("\\s+");
+			String[] items = line.split(config.getItemSeparator());
 
 			int[] sequenceAsInts = new int[items.length - 1];
 
 			// seqId item_1 item_2 ... item_n
 			for (int i = 1; i < items.length; ++i) {
-				sequenceAsInts[i - 1] = tids.get(items[i]);
+				sequenceAsInts[i - 1] = tids.get(items[i].trim());
 			}
 			gsm.addTransaction(sequenceAsInts, 0, sequenceAsInts.length, 1);
 
