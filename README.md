@@ -53,7 +53,7 @@ Item hierarchies should be specified in a *single* file using the following form
 ```
 item <tab> parent
 ```
-i.e., each line (tab delimited) contains an item and its generalization (parent item). Note that, the curren
+i.e., each line (tab delimited) contains an item and its generalization (parent item). 
 
 ##Sequential Mode
 The sequential version of the algorithm runs locally on a single machine. 
