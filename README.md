@@ -15,7 +15,7 @@ mining, such patterns include generalized *n*-grams (the ADJ house) or typed rel
 #LASH Overview
 ------------------
 Given a collection of input sequences of items and an item hierarchy, LASH mines all generalized sub-sequences (along with their frequencies) that:
-- Occur in at least σ ≥ 2 sequences (support threshold)
+- Occur in at least σ ≥ 1 sequences (support threshold)
 - Have length at most λ ≥ 2 (length threshold)
 - Have gap at most γ ≥ 0 between consecutive items (gap threshold)
 
